@@ -1,0 +1,3 @@
+rootProject.name = 'ReactNativeFlicks'
+
+include ':app'
