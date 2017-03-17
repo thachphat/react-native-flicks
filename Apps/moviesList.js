@@ -5,7 +5,9 @@ import {
     Text,
     View,
     ListView,
-    Image
+    Image,
+    TouchableOpacity,
+    RefreshControl
 } from 'react-native';
 
 export default class MoviesList extends Component {
@@ -14,6 +16,7 @@ export default class MoviesList extends Component {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             dataSource: ds.cloneWithRows([]),
+            refreshing: false,
         };
     }
 
@@ -34,13 +37,28 @@ export default class MoviesList extends Component {
             });
     }
 
+    _onRowPress(rowData) {
+        alert("you click " + rowData.title)
+    }
+
+    _onRefresh() {
+        this.setState({refreshing: true});
+        this.getMoviesFromApiAsync().then(() => {
+            this.setState({refreshing: false});
+        });
+    }
+
     renderRow(rowData) {
         return(
-            <View flexDirection="row">
-                <Image source={{uri: 'https://image.tmdb.org/t/p/w342' + rowData.poster_path}} />
-                <Text>{rowData.title}</Text>
-                <Text>{rowData.overview}</Text>
-            </View>
+            <TouchableOpacity onPress={() => this._onRowPress(rowData)}>
+                <View flexDirection="row" style={{marginTop: 10, marginBottom: 10}}>
+                    <Image source={{uri: 'https://image.tmdb.org/t/p/w342' + rowData.poster_path}} style={{flex: 3, height: 150, resizeMode: 'contain'}} />
+                    <View style={{flex: 7}}>
+                        <Text>{rowData.title}</Text>
+                        <Text>{rowData.overview}</Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
         )
     }
 
@@ -50,6 +68,14 @@ export default class MoviesList extends Component {
                 enableEmptySections={true}
                 dataSource={this.state.dataSource}
                 renderRow={this.renderRow.bind(this)}
+                style={{paddingTop: 20, backgroundColor: 'orange'}}
+
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh.bind(this)}
+                    />
+                }
             />
         );
     }
