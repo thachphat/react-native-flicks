@@ -33,7 +33,7 @@ export default class MoviesList extends Component {
                 })
             })
             .catch((error) => {
-                console.error(error);
+                alert(error)
             });
     }
 
@@ -42,9 +42,14 @@ export default class MoviesList extends Component {
     }
 
     _onRefresh() {
-        this.setState({refreshing: true});
+        this.setState({
+            refreshing: true,
+            dataSource: this.state.dataSource.cloneWithRows([])
+        });
         this.getMoviesFromApiAsync().then(() => {
-            this.setState({refreshing: false});
+            this.setState({
+                refreshing: false
+            });
         });
     }
 
