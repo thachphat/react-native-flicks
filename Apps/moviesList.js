@@ -10,6 +10,8 @@ import {
     RefreshControl
 } from 'react-native';
 
+import MovieDetail from './movieDetail.js'
+
 export default class MoviesList extends Component {
     constructor() {
         super();
@@ -38,7 +40,12 @@ export default class MoviesList extends Component {
     }
 
     _onRowPress(rowData) {
-        alert("you click " + rowData.title)
+        this.props.navigator.push({
+            component: MovieDetail,
+            title: 'Movie Detail',
+            passProps: {movie: rowData},
+            index: 1
+        })
     }
 
     _onRefresh() {
@@ -73,7 +80,6 @@ export default class MoviesList extends Component {
                 enableEmptySections={true}
                 dataSource={this.state.dataSource}
                 renderRow={this.renderRow.bind(this)}
-                style={{paddingTop: 20, backgroundColor: 'orange'}}
 
                 refreshControl={
                     <RefreshControl

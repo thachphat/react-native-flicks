@@ -9,12 +9,12 @@ import {
   AppRegistry
 } from 'react-native';
 
-import MoviesList from './Apps/moviesList.js'
+import MainNavigator from './Apps/mainNavigator.js'
 
 export default class ReactNativeFlicks extends Component {
   render() {
     return (
-      <MoviesList />
+      <MainNavigator />
     );
   }
 }
