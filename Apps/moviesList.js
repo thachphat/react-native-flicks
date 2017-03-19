@@ -5,12 +5,13 @@ import {
     Text,
     View,
     ListView,
-    Image,
     TouchableOpacity,
     RefreshControl
 } from 'react-native';
 
 import MovieDetail from './movieDetail.js'
+import Image from 'react-native-image-progress';
+import Progress from 'react-native-progress';
 
 export default class MoviesList extends Component {
     constructor() {
@@ -64,7 +65,11 @@ export default class MoviesList extends Component {
         return(
             <TouchableOpacity onPress={() => this._onRowPress(rowData)}>
                 <View flexDirection="row" style={{marginTop: 10, marginBottom: 10}}>
-                    <Image source={{uri: 'https://image.tmdb.org/t/p/w342' + rowData.poster_path}} style={{flex: 3, height: 150, resizeMode: 'contain'}} />
+                    <Image
+                        source={{uri: 'https://image.tmdb.org/t/p/w342' + rowData.poster_path}}
+                        style={{flex: 3, height: 150, resizeMode: 'contain'}}
+                        indicator={Progress}
+                    />
                     <View style={{flex: 7}}>
                         <Text>{rowData.title}</Text>
                         <Text>{rowData.overview}</Text>
