@@ -13,14 +13,8 @@ export default class MainNavigator extends Component {
             <NavigatorIOS
                 initialRoute={{component: MoviesList, title: 'Movies List', index: 0}}
                 style={{flex: 1, backgroundColor: 'orange'}}
+                barTintColor='orange'
             />
         );
     }
 }
-
-const styles = StyleSheet.create({
-    searchBar: {
-        flex: 1,
-        backgroundColor: 'white'
-    },
-})

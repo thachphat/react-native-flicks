@@ -75,7 +75,7 @@ export default class MoviesList extends Component {
                         indicator={Progress}
                     />
                     <View style={{flex: 7}}>
-                        <Text>{rowData.title}</Text>
+                        <Text style={styles.title}>{rowData.title}</Text>
                         <Text>{rowData.overview}</Text>
                     </View>
                 </View>
@@ -103,10 +103,11 @@ export default class MoviesList extends Component {
     render() {
         return (
             <TabBarIOS
-                unselectedTintColor="#CCC"
-                tintColor="yellow"
+                unselectedTintColor="dimgray"
+                tintColor="black"
                 unselectedItemTintColor="#CCC"
-                barTintColor="darkslateblue">
+                barTintColor="orange"
+                style={{backgroundColor: 'orange'}}>
                 <TabBarIOS.Item
                     title="Now Playing"
                     icon={require("../images/now_playing.png")}
@@ -137,3 +138,11 @@ export default class MoviesList extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        paddingBottom: 10
+    }
+})
