@@ -6,7 +6,8 @@ import {
     View,
     ListView,
     TouchableOpacity,
-    RefreshControl
+    RefreshControl,
+    TabBarIOS
 } from 'react-native';
 
 import MovieDetail from './movieDetail.js'
@@ -20,6 +21,7 @@ export default class MoviesList extends Component {
         this.state = {
             dataSource: ds.cloneWithRows([]),
             refreshing: false,
+            selectedTab: 'homeTab',
         };
     }
 
@@ -27,8 +29,10 @@ export default class MoviesList extends Component {
         this._onRefresh()
     }
 
-    getMoviesFromApiAsync() {
-        return fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed')
+    getMoviesFromApiAsync(category = 'now_playing') {
+        const url  = 'https://api.themoviedb.org/3/movie/' + category + '?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed'
+        console.log(url)
+        return fetch(url)
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({
@@ -49,12 +53,12 @@ export default class MoviesList extends Component {
         })
     }
 
-    _onRefresh() {
+    _onRefresh(category = 'now_playing') {
         this.setState({
             refreshing: true,
             dataSource: this.state.dataSource.cloneWithRows([])
         });
-        this.getMoviesFromApiAsync().then(() => {
+        this.getMoviesFromApiAsync(category).then(() => {
             this.setState({
                 refreshing: false
             });
@@ -79,7 +83,7 @@ export default class MoviesList extends Component {
         )
     }
 
-    render() {
+    _renderContent(selectedTab){
         return (
             <ListView
                 enableEmptySections={true}
@@ -93,6 +97,43 @@ export default class MoviesList extends Component {
                     />
                 }
             />
+        );
+    }
+
+    render() {
+        return (
+            <TabBarIOS
+                unselectedTintColor="#CCC"
+                tintColor="yellow"
+                unselectedItemTintColor="#CCC"
+                barTintColor="darkslateblue">
+                <TabBarIOS.Item
+                    title="Now Playing"
+                    icon={require("../images/now_playing.png")}
+                    selected={this.state.selectedTab === 'homeTab'}
+                    onPress={() => {
+                        this.setState({
+                            selectedTab: 'homeTab',
+                        });
+                        this._onRefresh('now_playing')
+                    }}>
+                {this._renderContent('homeTab')}
+                </TabBarIOS.Item>
+                <TabBarIOS.Item
+                    title="Top Rated"
+                    icon={require("../images/top_rated.png")}
+                    badgeColor="pink"
+                    selected={this.state.selectedTab === 'newMovieTab'}
+                    onPress={() => {
+                        this.setState({
+                            selectedTab: 'newMovieTab',
+                        });
+                        this._onRefresh('top_rated')
+                    }}>
+                {this._renderContent('newMovieTab')}
+                </TabBarIOS.Item>
+
+            </TabBarIOS>
         );
     }
 }
