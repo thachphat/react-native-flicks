@@ -20,8 +20,8 @@ export default class MoviesList extends Component {
         };
     }
 
-    componentWillMount() {
-        this.getMoviesFromApiAsync()
+    componentDidMount() {
+        this._onRefresh()
     }
 
     getMoviesFromApiAsync() {
